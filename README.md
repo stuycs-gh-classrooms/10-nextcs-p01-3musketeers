@@ -33,10 +33,10 @@ Ability to change the color of the ball, size of the platform, and the color of 
 How will you be using arrays in this project?
 
 1D Array:
-- YOUR ANSER HERE
-
+- Tracking lives: Store icons or life counters for display.
+  
 2D Array:
-- YOUR ANSWER HERE
+- Brick layout: Use a 2D array to store the positions, states (intact or broken), and types (normal or special) of the bricks.
 
 
 ### Controls
@@ -54,12 +54,23 @@ What classes will you be creating for this project? Include the instance variabl
 
 Ball
 - Instance variables:
-  x.speed, y.speed, bsize, Pvector, center
+  - x.speed, y.speed, bsize, Pvector, center
 - METHODS
-  - 
+  - move(): Updates the position of the ball based on velocity.
+  - display(): Draws the ball on the canvas.
+  - checkCollision(Platform p, Brick[][] bricks): Checks for collisions with walls, the platform, and bricks.
+  - reset(): Resets the ball position and speed when the player loses a life.
 
 Platform
 - Instance variables:
-  - x.speed, psize, pcolor
+  - x.speed, psize, pcolor, width, height
 - METHODS
-  - LIST METHODS HERE
+  - move(boolean left): Moves the platform left or right.
+  - display(): Draws the platform on the canvas.
+
+Brick
+- Instance variables:
+  - x, y, width, height, boolean isBroken, bcolor
+- METHODS
+  - display(): Draws the brick if it is not broken.
+  - checkCollision(Ball b): Checks if the ball has collided with the brick.
