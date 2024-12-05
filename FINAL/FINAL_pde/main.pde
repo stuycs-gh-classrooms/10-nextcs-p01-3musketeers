@@ -49,7 +49,7 @@ void draw() {
     ball.checkCollision(platform, bricks);
 
     // Ball falling off the screen
-    if (ball.y > height) {
+    if (ball.y > (height - 30)) {
       lives--; // Reduce life when the ball falls
       if (lives > 0) {
         ball.reset(); // Reset ball if lives are left
@@ -99,7 +99,8 @@ void displayYouWon() {
   textSize(32);
   fill(0, 255, 0);
   textAlign(CENTER, CENTER);
-  text("YOU WON!\nPress 'R' to Restart", width / 2, height / 2);
+  text("YOU WON!\nPress 'r' to Restart", width / 2, height / 2);
+  println("Test2");
 }
 
 void keyPressed() {
@@ -153,5 +154,6 @@ void resetGame() {
     }
     currentX = 5; // Reset for the next row
   }
-  if (
 }
+
+
