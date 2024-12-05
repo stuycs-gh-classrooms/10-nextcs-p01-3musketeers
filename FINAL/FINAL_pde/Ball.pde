@@ -1,7 +1,7 @@
 class Ball {
   float x, y, speedX, speedY, size;
   color bcolor;
-  float speedIncrement = 0.01;  // Increment speed over time
+  float speedIncrement = 0.005;  // Increment speed over time
 
   Ball(float x, float y, float size, color bcolor) {
     this.x = x;
@@ -44,8 +44,8 @@ class Ball {
     for (int i = 0; i < bricks.length; i++) {
       for (int j = 0; j < bricks[i].length; j++) {
         if (bricks[i][j] != null && bricks[i][j].isColliding(x, y, size)) {
-          bricks[i][j] = null;  // Break the brick
           speedY *= -1;  // Bounce off
+          bricks[i][j] = null;  // Break the brick
           points += 10;  // Add points
           break;  // Prevent multiple collisions in the same frame
         }
