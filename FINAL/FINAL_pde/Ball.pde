@@ -37,17 +37,24 @@ class Ball {
   void checkCollision(Platform p, Brick[][] bricks) {
     // Check collision with platform
     if (y + size / 2 >= p.y && x > p.x && x < p.x + p.width) {
-      speedY *= -1;
+      speedY *= -1;  // Bounce off platform
     }
 
     // Check collision with bricks
     for (int i = 0; i < bricks.length; i++) {
       for (int j = 0; j < bricks[i].length; j++) {
-        if (bricks[i][j] != null && bricks[i][j].isColliding(x, y, size)) {
-          speedY *= -1;  // Bounce off
-          bricks[i][j] = null;  // Break the brick
-          points += 10;  // Add points
-          break;  // Prevent multiple collisions in the same frame
+        Brick brick = bricks[i][j];
+
+        if (brick != null && brick.isColliding(x, y, size)) {
+          // Ball is colliding with the brick, bounce it back
+          speedY *= -1;  // Bounce off brick
+
+          // Mark the brick as broken and remove it from the array
+          bricks[i][j] = null;
+          points += 10;  // Add points for destroying the brick
+          
+          // Prevent further collisions in the same frame
+          return;
         }
       }
     }
