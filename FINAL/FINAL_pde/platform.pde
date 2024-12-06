@@ -12,10 +12,12 @@ class Platform {
   }
 
   void move(boolean left) {
-    if (left && x > 0) {
+    if (left && x > 1) {
       x -= speed;
     } else {
+      if (!left && x < 500) {
       x += speed;
+      }
     }
   }
   void display() {
@@ -23,5 +25,3 @@ class Platform {
     rect(x, y, width, height);
   }
 }
-
-
