@@ -48,6 +48,11 @@ void draw() {
     ball.move();
     ball.checkCollision(platform, bricks);
 
+    // Check if all bricks are destroyed (winning condition)
+    if (checkIfGameWon()) {
+      hasWon = true;  // Set the game to the win state
+    }
+
     // Ball falling off the screen
     if (ball.y > (height - 30)) {
       lives--; // Reduce life when the ball falls
@@ -100,24 +105,24 @@ void displayYouWon() {
   fill(0, 255, 0);
   textAlign(CENTER, CENTER);
   text("YOU WON!\nPress 'r' to Restart", width / 2, height / 2);
-  println("Test2");
 }
 
 void keyPressed() {
-  // Handle key presses for pause, resume, platform customization, ball reset, etc.
   if (key == ' ' && !isGameOver && !hasWon) {
     isGameStarted = true; // Start the game when space is pressed
   } else if (key == 'r' && (isGameOver || hasWon)) {
-    resetGame(); // Restart the game
+    resetGame(); // Restart the game when 'r' is pressed
   } else if (key == 'p') {
     platform.width += 10; // Increase platform size
   } else if (key == 'b') {
     ball.bcolor = color(random(255), random(255), random(255)); // Change ball color to a random color
   } else if (key == 't') {
-    // Change brick color
+    // Change brick color to a random color for each brick
     for (int i = 0; i < bricks.length; i++) {
       for (int j = 0; j < bricks[i].length; j++) {
-        bricks[i][j].bcolor = color(random(255), random(255), random(255));
+        if (bricks[i][j] != null) {
+          bricks[i][j].bcolor = color(random(255), random(255), random(255));  // Assign new random color
+        }
       }
     }
   }
@@ -125,7 +130,7 @@ void keyPressed() {
   // Platform movement (left and right arrow keys)
   if (keyCode == LEFT) {
     platform.move(true); // Move platform left
-  } else if(keyCode == RIGHT) {
+  } else if (keyCode == RIGHT) {
     platform.move(false); // Move platform right
   }
 }
@@ -156,4 +161,14 @@ void resetGame() {
   }
 }
 
-
+// Check if the game is won (all bricks are broken)
+boolean checkIfGameWon() {
+  for (int i = 0; i < bricks.length; i++) {
+    for (int j = 0; j < bricks[i].length; j++) {
+      if (bricks[i][j] != null) {
+        return false; // If any brick is still present, the game isn't won yet
+      }
+    }
+  }
+  return true; // If no bricks are left, the player has won
+}
