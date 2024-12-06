@@ -14,9 +14,10 @@ class Ball {
 
   void move() {
     // Gradually increase the speed
-    speedX += (speedX > 0 ? speedIncrement : -speedIncrement);  // Gradually change direction and speed
+    speedX += (speedX > 0 ? speedIncrement : -speedIncrement);
     speedY += speedIncrement;
 
+    // Update position
     x += speedX;
     y += speedY;
 
@@ -38,23 +39,29 @@ class Ball {
     // Check collision with platform
     if (y + size / 2 >= p.y && x > p.x && x < p.x + p.width) {
       speedY *= -1;  // Bounce off platform
+      return;        // Exit early
     }
 
-    // Check collision with bricks
-    for (int i = 0; i < bricks.length; i++) {
-      for (int j = 0; j < bricks[i].length; j++) {
-        Brick brick = bricks[i][j];
+    // Step-based collision detection for bricks
+    float steps = max(abs(speedX), abs(speedY)); // Determine the number of steps
+    float stepX = speedX / steps;  // Divide movement into steps
+    float stepY = speedY / steps;
 
-        if (brick != null && brick.isColliding(x, y, size)) {
-          // Ball is colliding with the brick, bounce it back
-          speedY *= -1;  // Bounce off brick
+    for (int step = 0; step < steps; step++) {
+      float testX = x + stepX * step;  // Predicted position at this step
+      float testY = y + stepY * step;
 
-          // Mark the brick as broken and remove it from the array
-          bricks[i][j] = null;
-          points += 10;  // Add points for destroying the brick
-          
-          // Prevent further collisions in the same frame
-          return;
+      for (int i = 0; i < bricks.length; i++) {
+        for (int j = 0; j < bricks[i].length; j++) {
+          Brick brick = bricks[i][j];
+
+          if (brick != null && brick.isColliding(testX, testY, size)) {
+            // Ball is colliding with the brick
+            speedY *= -1;  // Reverse Y speed
+            bricks[i][j] = null;  // Remove the brick
+            points += 10;  // Add points for destroying the brick
+            return;  // Prevent further collisions in this frame
+          }
         }
       }
     }
