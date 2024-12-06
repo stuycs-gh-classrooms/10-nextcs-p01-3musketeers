@@ -10,7 +10,7 @@ boolean hasWon = false;
 
 void setup() {
   size(600, 400);
-  ball = new Ball(width / 2, height - 50, 20, color(255, 0, 0));  // Start with a red ball
+  ball = new Ball(width / 2, height - 50, 15, color(255, 0, 0));  // Start with a red ball
   platform = new Platform(width / 2 - 50, height - 30, 100, 10, color(255));
   bricks = new Brick[5][7];  // 5 rows and 7 columns of bricks
 
@@ -54,7 +54,7 @@ void draw() {
     }
 
     // Ball falling off the screen
-    if (ball.y > (height - 30)) {
+    if (ball.y > (height - 15)) {
       lives--; // Reduce life when the ball falls
       if (lives > 0) {
         ball.reset(); // Reset ball if lives are left
