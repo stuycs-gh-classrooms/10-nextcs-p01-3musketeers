@@ -23,3 +23,5 @@ class Platform {
     rect(x, y, width, height);
   }
 }
+
+
