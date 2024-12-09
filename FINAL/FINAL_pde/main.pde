@@ -1,4 +1,4 @@
-Ball ball;
+Ball ball; 
 Platform platform;
 Brick[][] bricks;
 int lives = 3;
@@ -97,14 +97,22 @@ void displayGameOver() {
   textSize(32);
   fill(255, 0, 0);
   textAlign(CENTER, CENTER);
-  text("GAME OVER\nPress 'r' to Restart", width / 2, height / 2);
+  text("GAME OVER", width / 2, height / 2 - 20);
+  textSize(24);
+  text("Points: " + points, width / 2, height / 2 + 20);
+  textSize(16);
+  text("Press 'r' to Restart", width / 2, height / 2 + 60);
 }
 
 void displayYouWon() {
   textSize(32);
   fill(0, 255, 0);
   textAlign(CENTER, CENTER);
-  text("YOU WON!\nPress 'r' to Restart", width / 2, height / 2);
+  text("YOU WON!", width / 2, height / 2 - 20);
+  textSize(24);
+  text("Points: " + points, width / 2, height / 2 + 20);
+  textSize(16);
+  text("Press 'r' to Restart", width / 2, height / 2 + 60);
 }
 
 void keyPressed() {
@@ -113,7 +121,9 @@ void keyPressed() {
   } else if (key == 'r' && (isGameOver || hasWon)) {
     resetGame(); // Restart the game when 'r' is pressed
   } else if (key == 'p') {
-    platform.width += 10; // Increase platform size
+    if (platform.width < 200) {
+    platform.width += 10;
+    }// Increase platform size
   } else if (key == 'b') {
     ball.bcolor = color(random(255), random(255), random(255)); // Change ball color to a random color
   } else if (key == 't') {
@@ -171,4 +181,4 @@ boolean checkIfGameWon() {
     }
   }
   return true; // If no bricks are left, the player has won
-}
+}      
