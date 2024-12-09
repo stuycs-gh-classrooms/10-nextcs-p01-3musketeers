@@ -35,37 +35,32 @@ class Ball {
     ellipse(x, y, size, size);
   }
 
-  void checkCollision(Platform p, Brick[][] bricks) {
-    // Check collision with platform
-    if (y + size / 2 >= p.y && x > p.x && x < p.x + p.width) {
-      speedY *= -1;  // Bounce off platform
-      return;        // Exit early
-    }
+   void checkCollision(Platform p, Brick[][] bricks) {
+  // Check collision with platform
+  if (y + size / 2 >= p.y && x > p.x && x < p.x + p.width) {
+    speedY *= -1;  // Bounce off platform
+    return;        // Exit early
+  }
 
-    // Step-based collision detection for bricks
-    float steps = max(abs(speedX), abs(speedY)); // Determine the number of steps
-    float stepX = speedX / steps;  // Divide movement into steps
-    float stepY = speedY / steps;
+  // Collision detection for bricks
+  for (int i = 0; i < bricks.length; i++) {
+    for (int j = 0; j < bricks[i].length; j++) {
+      Brick brick = bricks[i][j];
+      if (brick != null && brick.isColliding(x, y, size)) {
+        bricks[i][j] = null; // Remove the brick
+        points += 10; // Add points
 
-    for (int step = 0; step < steps; step++) {
-      float testX = x + stepX * step;  // Predicted position at this step
-      float testY = y + stepY * step;
-
-      for (int i = 0; i < bricks.length; i++) {
-        for (int j = 0; j < bricks[i].length; j++) {
-          Brick brick = bricks[i][j];
-
-          if (brick != null && brick.isColliding(testX, testY, size)) {
-            // Ball is colliding with the brick
-            speedY *= -1;  // Reverse Y speed
-            bricks[i][j] = null;  // Remove the brick
-            points += 10;  // Add points for destroying the brick
-            return;  // Prevent further collisions in this frame
-          }
+        // Decide which direction to bounce
+        if (x > brick.x && x < brick.x + brick.width) {
+          speedY *= -1; // Bounce vertically
+        } else {
+          speedX *= -1; // Bounce horizontally
         }
+        return; // Exit to avoid multiple collisions in the same frame
       }
     }
   }
+}//checkCollisons
 
   void reset() {
     x = width / 2;
